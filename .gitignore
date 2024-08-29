@@ -1,0 +1,21 @@
+# Idea
+.idea
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Chart dependencies
+charts/*/charts/*.tgz
+charts/*/tmpcharts
+
+# Terraform / OpenTofu
+*.tfstate
+*.tfstate.*
+.terraform
