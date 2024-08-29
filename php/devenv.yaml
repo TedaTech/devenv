@@ -2,5 +2,3 @@
 inputs:
   nixpkgs:
     url: github:cachix/devenv-nixpkgs/rolling
-  php:
-    url: github:TedaTech/devenv?dir=php
