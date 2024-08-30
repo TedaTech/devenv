@@ -10,6 +10,7 @@ in
     pkgs.kubectl
     pkgs.k9s
     pkgs.kyverno-chainsaw
+    pkgs.skaffold
   ];
 
   languages = {
@@ -18,6 +19,7 @@ in
 
   processes = {
     kubernetes.exec = "envstart";
+    skaffold.exec = "skaffold dev"
   };
 
   scripts.envclean.exec = "colima delete --profile dev-${colimaProfile} --force; rm -Rf ${config.env.DEVENV_ROOT}/opentofu/*.tfstate";
