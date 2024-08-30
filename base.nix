@@ -9,6 +9,7 @@ in
     pkgs.colima
     pkgs.kubectl
     pkgs.k9s
+    pkgs.kyverno-chainsaw
   ];
 
   languages = {
