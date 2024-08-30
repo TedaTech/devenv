@@ -19,7 +19,7 @@ in
 
   processes = {
     kubernetes.exec = "envstart";
-    skaffold.exec = "skaffold dev"
+    skaffold.exec = "skaffold dev";
   };
 
   scripts.envclean.exec = "colima delete --profile dev-${colimaProfile} --force; rm -Rf ${config.env.DEVENV_ROOT}/opentofu/*.tfstate";
