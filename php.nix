@@ -3,7 +3,6 @@
   languages = {
     php = {
       enable = true;
-      version = "8.2";
       extensions = [
         "xdebug"
       ];
