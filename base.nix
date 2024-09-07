@@ -11,6 +11,8 @@ in
     pkgs.k9s
     pkgs.kyverno-chainsaw
     pkgs.skaffold
+    pkgs.tektoncd-cli
+    pkgs.crossplane-cli
   ];
 
   languages = {
