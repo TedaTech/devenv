@@ -5,6 +5,13 @@
   ];
 
   languages = {
+    javascript = {
+      enable = true;
+      npm.enable = true;
+    };
+    typescript = {
+      enable = true;
+    };
     php = {
       enable = true;
       extensions = [
