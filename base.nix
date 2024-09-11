@@ -6,7 +6,6 @@ in
   packages = [
     pkgs.git
     pkgs.jq
-    pkgs.docker
     pkgs.kind
     pkgs.kubectl
     pkgs.k9s
