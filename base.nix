@@ -14,6 +14,7 @@ in
     pkgs.watchexec
     pkgs.tektoncd-cli
     pkgs.crossplane-cli
+    pkgs.mkcert
   ];
 
   languages = {
