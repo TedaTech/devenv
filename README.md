@@ -26,7 +26,7 @@ inputs:
   pre-commit-hooks:
     url: github:cachix/pre-commit-hooks.nix
   tedatech:
-    url: git+ssh://git@github.com/TedaTech/devenv?ref=refs/tags/v1.4.0
+    url: github:TedaTech/devenv/v1.4.0
     flake: false
 imports:
   - tedatech/base.nix
