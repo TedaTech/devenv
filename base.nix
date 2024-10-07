@@ -6,7 +6,7 @@ in
   packages = [
     pkgs.git
     pkgs.jq
-    pkgs.kind
+    pkgs.minikube
     pkgs.kubectl
     pkgs.k9s
     pkgs.kyverno-chainsaw
