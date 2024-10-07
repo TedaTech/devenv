@@ -16,6 +16,7 @@
       enable = true;
       extensions = [
         "xdebug"
+        "xsl"
       ];
       ini = lib.concatStringsSep "\n" [
         "xdebug.mode=debug"
