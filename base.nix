@@ -17,9 +17,18 @@ in
     pkgs.tektoncd-cli
     pkgs.crossplane-cli
     pkgs.mkcert
+    pkgs.cilium-cli
+    pkgs.fluxcd
+    pkgs.kubeconform
+    pkgs.yamllint
   ];
 
-  languages = {
-    opentofu.enable = true;
-  };
+  pre-commit.hooks = {
+    lint = {
+      enable = true;
+      name = "lint yaml";
+      entry = "just lint:yaml";
+      files = "\\.(yaml|yml)$";
+    };
+  };  
 }
