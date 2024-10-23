@@ -8,7 +8,7 @@ in
   packages = [
     pkgs.git
     pkgs.jq
-    pkgs.colima
+    pkgs.kind
     pkgs.kubectl
     pkgs.k9s
     pkgs.kyverno-chainsaw
