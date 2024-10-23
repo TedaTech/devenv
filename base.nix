@@ -24,10 +24,10 @@ in
   ];
 
   pre-commit.hooks = {
-    lint = {
+    lint-yaml = {
       enable = true;
       name = "lint yaml";
-      entry = "just lint:yaml";
+      entry = "just lint-yaml";
       files = "\\.(yaml|yml)$";
     };
   };  
