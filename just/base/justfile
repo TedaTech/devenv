@@ -1,0 +1,31 @@
+# Create cluster and configure, root-ca secret and install crossplane
+cluster-create: && _cluster-install-cilium _cluster-install-local-cert
+  kind get clusters | grep {{ cluster_name }} || kind create cluster \
+      --name {{ cluster_name }} \
+      --image kindest/node:{{ kubernetes_version }} \
+      --config=.just/just/base/kind-config.yaml
+
+_cluster-install-cilium:
+    cilium status || cilium install --version {{ cilium_version }}
+
+_cluster-install-local-cert:
+    mkcert -install
+
+    kubectl create namespace cert-manager || true
+    kubectl create secret tls root-ca --namespace cert-manager \
+      --key "$(mkcert -CAROOT)/rootCA-key.pem" \
+      --cert "$(mkcert -CAROOT)/rootCA.pem" \
+      --dry-run=client -o yaml \
+      | kubectl apply -f -
+
+# Destroy the entire cluster, ensure a clean environment.
+cluster-destroy:
+  kind delete cluster --name {{cluster_name}}
+
+
+# Setup infra components, as referenced from infra repository
+apply-infra environment="staging" pathQuery="?ref=main" repository="git@github.com:TedaTech/infra//":
+    kubectl apply -k {{ repository }}clusters/{{ environment }}/flux-system{{ pathQuery }}
+    kubectl apply -k {{ repository }}infrastructure/controllers{{ pathQuery }}
+    kubectl wait --for=condition=Ready helmrelease/crossplane -n crossplane --timeout=60s
+    kubectl apply -k {{ repository }}infrastructure/configs{{ pathQuery }}

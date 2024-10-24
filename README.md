@@ -22,11 +22,11 @@ Add these files to your project and run `devenv shell`
 # yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
 inputs:
   nixpkgs:
-    url: github:NixOS/nixpkgs/nixos-unstable
+    url: github:cachix/devenv-nixpkgs/rolling
   pre-commit-hooks:
     url: github:cachix/pre-commit-hooks.nix
   tedatech:
-    url: github:TedaTech/devenv/v1.4.0
+    url: github:TedaTech/devenv/v1.7.1
     flake: false
 imports:
   - tedatech/base.nix
@@ -38,7 +38,3 @@ imports:
 {
 }
 ```
-
-## License
-
-[Specify the license here, if applicable]
