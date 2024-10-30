@@ -19,16 +19,5 @@ in
     pkgs.mkcert
     pkgs.cilium-cli
     pkgs.fluxcd
-    pkgs.kubeconform
-    pkgs.yamllint
   ];
-
-  pre-commit.hooks = {
-    lint-yaml = {
-      enable = true;
-      name = "lint yaml";
-      entry = "just lint-yaml";
-      files = "\\.(yaml|yml)$";
-    };
-  };  
 }
