@@ -5,6 +5,10 @@ in
 {
   dotenv.enable = true;
 
+  env = {
+    TASK_X_REMOTE_TASKFILES = 1;
+  };
+
   packages = [
     pkgs.git
     pkgs.jq
