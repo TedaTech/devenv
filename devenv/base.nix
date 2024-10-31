@@ -12,12 +12,9 @@ in
     pkgs.kubectl
     pkgs.k9s
     pkgs.kyverno-chainsaw
-    pkgs.just
     pkgs.watchexec
-    pkgs.tektoncd-cli
-    pkgs.crossplane-cli
     pkgs.mkcert
     pkgs.cilium-cli
-    pkgs.fluxcd
+    pkgs.go-task
   ];
 }
