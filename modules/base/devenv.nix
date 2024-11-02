@@ -5,10 +5,20 @@ in
 {
   dotenv.enable = true;
 
-  env = {
-    TASK_X_REMOTE_TASKFILES = 1;
-  };
+  scripts.teda.exec = ''
+      TEMPFILE=$(mktemp)
+      trap 'rm -f "$TEMPFILE"' EXIT
 
+      echo "version: 3" > "$TEMPFILE"
+      echo "includes:" >> "$TEMPFILE"
+      for var in ''${!TASKFILE_*}; do
+        name="''${var#TASKFILE_}"
+        echo "  $name: ''${!var}" >> "$TEMPFILE"
+      done
+
+      task --taskfile "$TEMPFILE" "$@"
+    '';
+  #
   packages = [
     pkgs.git
     pkgs.jq
@@ -16,7 +26,6 @@ in
     pkgs.kubectl
     pkgs.k9s
     pkgs.kyverno-chainsaw
-    pkgs.watchexec
     pkgs.mkcert
     pkgs.cilium-cli
     pkgs.go-task

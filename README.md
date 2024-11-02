@@ -6,12 +6,6 @@ This repository contains the devenv configurations used across Teda projects. Th
 
 The configurations in this repository are designed to work with [devenv](https://devenv.sh/), a tool for creating reproducible development environments.
 
-## Key Components
-
-1. `.editorconfig`: Defines coding style preferences across different editors and IDEs.
-2. `base.nix`: Contains the base configuration for all Teda projects, including common tools and packages.
-3. `web.nix`: Specific configuration for web development projects, including JavaScript, TypeScript, and PHP setups.
-
 ## Usage
 
 To use these configurations in a Teda project:
@@ -20,16 +14,16 @@ Add these files to your project and run `devenv shell`
 ```yaml
 # devenv.yaml
 # yaml-language-server: $schema=https://devenv.sh/devenv.schema.json
+allowUnfree: true
 inputs:
-  nixpkgs:
-    url: github:cachix/devenv-nixpkgs/rolling
-  pre-commit-hooks:
-    url: github:cachix/pre-commit-hooks.nix
-  tedatech:
-    url: github:TedaTech/devenv/v1.7.1
-    flake: false
+    nixpkgs:
+        url: github:cachix/devenv-nixpkgs/rolling
+    tedatech:
+        url: github:TedaTech/devenv/main
+        flake: false
 imports:
-  - tedatech/base.nix
+    - tedatech/modules/base
+    - tedatech/modules/infra
 ```
 
 ```nix
