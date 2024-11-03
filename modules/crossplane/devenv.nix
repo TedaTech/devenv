@@ -6,7 +6,9 @@
 
   languages = {
     go = {
-      enable = true;
+      # Enabled would be better,* not possible du to go 1.23 requirement
+      # @see https://github.com/cachix/devenv/issues/1568
+      enable = false;
     };
   };
 }
