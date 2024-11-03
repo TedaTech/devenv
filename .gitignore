@@ -1,3 +1,6 @@
+#################################
+## TeDa Tech Git ignore - start #
+#################################
 # Idea
 .idea
 
@@ -38,3 +41,8 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
+
+
+#################################
+## TeDa Tech Git ignore - end   #
+#################################
