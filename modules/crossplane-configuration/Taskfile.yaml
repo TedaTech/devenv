@@ -9,15 +9,54 @@ tasks:
   apply:
     desc: Apply the crossplane configuration to the cluster
     deps: [infra:create]
+    sources:
+      - 'templates/*.goyaml'
+    cmds:
+      - task: apply-apis
+      - task: apply-templates
+      - task: apply-configurations
+      - task: apply-wait-ready
+
+  apply-apis:
+    internal: true
+    sources:
+      - 'apis/*.yaml'
+      - 'apis/**/*.yaml'
     cmds:
       - kubectl apply --filename apis
       - kubectl wait --for=condition=established compositeresourcedefinition/xmanagementclusters.cfg.tedatech.app --timeout=5s
-      - kubectl apply --filename examples
-      - kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout=120s
+
+  apply-templates:
+    internal: true
+    sources:
+      - 'templates/*.goyaml'
+      - 'templates/**/*.goyaml'
+    cmds:
       - |
         kubectl create --namespace crossplane configmap crossplane-go-templates \
           --from-file=templates \
           --output yaml \
           --dry-run=client \
           | kubectl apply -f -
+
+  apply-configurations:
+    internal: true
+    sources:
+      - 'examples/*.yaml'
+      - 'examples/**/*.yaml'
+    cmds:
+      - kubectl apply --filename examples
+
+  apply-wait-ready:
+    internal: true
+    cmds:
+      - kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout=120s
       - kubectl wait --for=condition=healthy function.pkg.crossplane.io --all --timeout=120s
+
+  test:
+    desc: Run the chainsaw tests
+    deps: [apply]
+    cmds:
+        - chainsaw test {{.CLI_ARGS}}
+    sources:
+      - 'tests/**/*.yaml'
