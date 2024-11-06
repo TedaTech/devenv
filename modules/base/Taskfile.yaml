@@ -23,11 +23,18 @@ tasks:
     status:
       - kind get clusters | grep {{.CLUSTER_NAME}}
     cmds:
+      - task: cluster-create-image-cache
       - |
         kind create cluster \
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
           --config=$TEDA_KIND_CONFIG
+  cluster-create-image-cache:
+    internal: true
+    status:
+      - docker volume inspect kind-containerd-data
+    cmds:
+      - docker volume create kind-containerd-data
 
   install-cilium:
     internal: true
@@ -53,6 +60,8 @@ tasks:
   install-infra:
     desc: Setup infra components, as referenced from infra repository
     internal: true
+    status:
+      - kubectl wait --for=condition=Ready helmrelease/crossplane -n crossplane --timeout=0s
     vars:
       ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
       PATH_QUERY: '{{.PATH_QUERY | default "?ref=main"}}'

@@ -11,6 +11,7 @@ in
   dotenv.enable = true;
 
   packages = [
+    pkgs.jq
     pkgs.git
     pkgs.kind
     pkgs.kubectl

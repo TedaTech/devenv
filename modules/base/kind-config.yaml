@@ -5,6 +5,9 @@ networking:
   podSubnet: "10.244.0.0/16"
 nodes:
 - role: control-plane
+  extraMounts:
+    - hostPath: /var/lib/docker/volumes/kind-containerd-data/_data
+      containerPath: /var/lib/containerd
   extraPortMappings:
   - containerPort: 80
     hostPort: 80
