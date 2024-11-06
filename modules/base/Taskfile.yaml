@@ -11,6 +11,12 @@ tasks:
       - task: cluster-create
       - task: install-cilium
       - task: install-local-cert
+      - task: install-infra
+
+  destroy:
+    desc: Destroy the entire cluster, ensure a clean environment
+    cmds:
+      - kind delete cluster --name {{.CLUSTER_NAME}}
 
   cluster-create:
     internal: true
@@ -21,7 +27,7 @@ tasks:
         kind create cluster \
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
-          --config=kind-config.yaml
+          --config=$TEDA_KIND_CONFIG
 
   install-cilium:
     internal: true
@@ -44,13 +50,9 @@ tasks:
           --dry-run=client -o yaml \
           | kubectl apply -f -
 
-  destroy:
-    desc: Destroy the entire cluster, ensure a clean environment
-    cmds:
-      - kind delete cluster --name {{.CLUSTER_NAME}}
-
-  apply-infra:
+  install-infra:
     desc: Setup infra components, as referenced from infra repository
+    internal: true
     vars:
       ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
       PATH_QUERY: '{{.PATH_QUERY | default "?ref=main"}}'
