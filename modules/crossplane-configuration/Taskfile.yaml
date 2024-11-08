@@ -9,13 +9,10 @@ tasks:
   apply:
     desc: Apply the crossplane configuration to the cluster
     deps: [infra:create]
-    sources:
-      - 'templates/*.goyaml'
     cmds:
       - task: apply-apis
       - task: apply-templates
       - task: apply-configurations
-      - task: apply-wait-ready
 
   apply-apis:
     internal: true
@@ -29,8 +26,8 @@ tasks:
   apply-templates:
     internal: true
     sources:
-      - 'templates/*.goyaml'
-      - 'templates/**/*.goyaml'
+      - 'templates/*.goyml'
+      - 'templates/**/*.goyml'
     cmds:
       - |
         kubectl create --namespace crossplane configmap crossplane-go-templates \
@@ -45,13 +42,11 @@ tasks:
       - 'examples/*.yaml'
       - 'examples/**/*.yaml'
     cmds:
-      - kubectl apply --filename examples
-
-  apply-wait-ready:
-    internal: true
-    cmds:
-      - kubectl wait --for=condition=healthy provider.pkg.crossplane.io --all --timeout=120s
-      - kubectl wait --for=condition=healthy function.pkg.crossplane.io --all --timeout=120s
+      - kubectl apply --filename examples/functions.yaml
+      - kubectl apply --filename examples/providers.yaml
+      - kubectl wait --for=condition=healthy functions.pkg.crossplane.io --all --timeout=120s
+      - kubectl wait --for=condition=healthy providers.pkg.crossplane.io --all --timeout=120s
+      - kubectl apply --filename examples/provider-config.yaml
 
   test:
     desc: Run the chainsaw tests

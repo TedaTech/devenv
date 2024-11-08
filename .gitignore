@@ -22,26 +22,12 @@ charts/*/tmpcharts
 *.tfstate
 *.tfstate.*
 .terraform
-# Devenv
-.devenv*
-devenv.local.nix
 
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml
+# Aider
 .aider*
-# Devenv
-.devenv*
-devenv.local.nix
 
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml
-
+# Taskfile
+.task/
 
 #################################
 ## TeDa Tech Git ignore - end   #

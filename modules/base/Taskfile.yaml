@@ -17,6 +17,8 @@ tasks:
     desc: Destroy the entire cluster, ensure a clean environment
     cmds:
       - kind delete cluster --name {{.CLUSTER_NAME}}
+      # Ensures that on a new cluster all template files are applied
+      - rm -Rf .task
 
   cluster-create:
     internal: true
