@@ -51,7 +51,17 @@ tasks:
   test:
     desc: Run the chainsaw tests
     deps: [apply]
+    status:
+        # Ensures test command is always rerun when started
+        - false
     cmds:
         - chainsaw test {{.CLI_ARGS}}
+    # When using --watch we want to rerun on all changes
     sources:
       - 'tests/**/*.yaml'
+      - 'examples/*.yaml'
+      - 'examples/**/*.yaml'
+      - 'templates/*.goyml'
+      - 'templates/**/*.goyml'
+      - 'apis/*.yaml'
+      - 'apis/**/*.yaml'
