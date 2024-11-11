@@ -82,7 +82,7 @@ tasks:
         sh: echo '{{ if kindIs "invalid" .INFRA_PATH_QUERY }}?ref=main{{end}}'
       INFRA_REPOSITORY: '{{.INFRA_REPOSITORY | default "git@github.com:TedaTech/infra//"}}'
     cmds:
-      - kubectl apply -f {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system/gotk-components.yaml{{.INFRA_PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system-dev{{.INFRA_PATH_QUERY}}
       - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/controllers{{.INFRA_PATH_QUERY}}
       - kubectl wait --for=condition=Ready helmrelease --all --all-namespaces --timeout=300s
       - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/configs{{.INFRA_PATH_QUERY}}
