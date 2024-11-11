@@ -69,7 +69,7 @@ tasks:
       INFRA_PATH_QUERY: '{{.INFRA_PATH_QUERY | default "?ref=main"}}'
       INFRA_REPOSITORY: '{{.INFRA_REPOSITORY | default "git@github.com:TedaTech/infra//"}}'
     cmds:
-      - kubectl apply -k {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system{{.PATH_QUERY}}
-      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/controllers{{.PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system{{.INFRA_PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/controllers{{.INFRA_PATH_QUERY}}
       - kubectl wait --for=condition=Ready helmrelease --all --all-namespaces --timeout=300s
-      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/configs{{.PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/configs{{.INFRA_PATH_QUERY}}
