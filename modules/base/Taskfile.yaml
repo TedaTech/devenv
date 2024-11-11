@@ -31,6 +31,7 @@ tasks:
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
           --config=$TEDA_KIND_CONFIG
+
   cluster-create-image-cache:
     internal: true
     status:
@@ -42,10 +43,21 @@ tasks:
     internal: true
     status:
       - cilium status
+    vars:
+      API_SERVER_IP:
+        sh: kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}'
+      API_SERVER_PORT:
+        sh: kubectl get svc kubernetes -o jsonpath='{.spec.ports[0].targetPort}'
     cmds:
-      - cilium status || cilium install --version {{.CILIUM_VERSION}}
+      - |
+        cilium status || cilium install  \
+          --version {{.CILIUM_VERSION}} \
+          --set kubeProxyReplacement=true \
+          --set k8sServiceHost={{.API_SERVER_IP}} \
+          --set k8sServicePort={{.API_SERVER_PORT}}
 
   install-local-cert:
+    desc: Uses mkcert to install locally trusted root certificate and exports cert to k8s secret
     internal: true
     status:
       - kubectl get secret --namespace cert-manager root-ca
