@@ -67,9 +67,9 @@ tasks:
     vars:
       ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
       PATH_QUERY: '{{.PATH_QUERY | default "?ref=main"}}'
-      REPOSITORY: '{{.REPOSITORY | default "git@github.com:TedaTech/infra//"}}'
+      INFRA_REPOSITORY: '{{.INFRA_REPOSITORY | default "git@github.com:TedaTech/infra//"}}'
     cmds:
-      - kubectl apply -k {{.REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system{{.PATH_QUERY}}
-      - kubectl apply -k {{.REPOSITORY}}infrastructure/controllers{{.PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system{{.PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/controllers{{.PATH_QUERY}}
       - kubectl wait --for=condition=Ready helmrelease/crossplane -n crossplane --timeout=300s
-      - kubectl apply -k {{.REPOSITORY}}infrastructure/configs{{.PATH_QUERY}}
+      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/configs{{.PATH_QUERY}}
