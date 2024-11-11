@@ -27,7 +27,7 @@ tasks:
     cmds:
       - task: cluster-create-image-cache
       - |
-        kind create cluster \
+        kind get clusters | grep {{.CLUSTER_NAME}} || kind create cluster \
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
           --config=$TEDA_KIND_CONFIG
@@ -43,7 +43,7 @@ tasks:
     status:
       - cilium status
     cmds:
-      - cilium install --version {{.CILIUM_VERSION}}
+      - cilium status || cilium install --version {{.CILIUM_VERSION}}
 
   install-local-cert:
     internal: true
