@@ -21,5 +21,6 @@ in
     pkgs.cilium-cli
     pkgs.go-task
     pkgs.telepresence2
+    pkgs.tektoncd-cli
   ];
 }
