@@ -20,5 +20,6 @@ in
     pkgs.mkcert
     pkgs.cilium-cli
     pkgs.go-task
+    pkgs.telepresence2
   ];
 }
