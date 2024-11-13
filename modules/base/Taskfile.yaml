@@ -85,4 +85,5 @@ tasks:
     vars:
       INFRA_CLUSTER: '{{.INFRA_CLUSTER | default "git@github.com/TedaTech/infra.git//clusters/dev/flux-system"}}'
     cmds:
+      - flux install
       - kubectl apply -k "{{ .INFRA_CLUSTER }}"
