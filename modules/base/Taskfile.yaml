@@ -24,13 +24,19 @@ tasks:
     internal: true
     status:
       - kind get clusters | grep {{.CLUSTER_NAME}}
+    vars:
+      TEDA_KIND_CONFIG_TMP:
+        sh: mktemp
     cmds:
+      - defer: rm "{{ .TEDA_KIND_CONFIG_TMP }}"
       - task: cluster-create-image-cache
       - |
+        export SSH_AUTH_SOCK_DIR=$(dirname $SSH_AUTH_SOCK)
+        envsubst < "$TEDA_KIND_CONFIG" > "{{ .TEDA_KIND_CONFIG_TMP }}"
         kind get clusters | grep {{.CLUSTER_NAME}} || kind create cluster \
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
-          --config=$TEDA_KIND_CONFIG
+          --config="{{ .TEDA_KIND_CONFIG_TMP }}"
 
   cluster-create-image-cache:
     internal: true
@@ -77,12 +83,6 @@ tasks:
     status:
       - kubectl wait --for=condition=Ready helmrelease/crossplane -n crossplane --timeout=0s
     vars:
-      ENVIRONMENT: '{{.ENVIRONMENT | default "staging"}}'
-      INFRA_PATH_QUERY:
-        sh: echo '{{ if kindIs "invalid" .INFRA_PATH_QUERY }}?ref=main{{end}}'
-      INFRA_REPOSITORY: '{{.INFRA_REPOSITORY | default "git@github.com:TedaTech/infra//"}}'
+      INFRA_CLUSTER: '{{.INFRA_CLUSTER | default "git@github.com/TedaTech/infra.git//clusters/dev/flux-system"}}'
     cmds:
-      - kubectl apply -k {{.INFRA_REPOSITORY}}clusters/{{.ENVIRONMENT}}/flux-system-dev{{.INFRA_PATH_QUERY}}
-      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/controllers{{.INFRA_PATH_QUERY}}
-      - kubectl wait --for=condition=Ready helmrelease --all --all-namespaces --timeout=300s
-      - kubectl apply -k {{.INFRA_REPOSITORY}}infrastructure/configs{{.INFRA_PATH_QUERY}}
+      - kubectl apply -k "{{ .INFRA_CLUSTER }}"

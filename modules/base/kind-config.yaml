@@ -3,12 +3,16 @@ apiVersion: kind.x-k8s.io/v1alpha4
 networking:
   disableDefaultCNI: true
   kubeProxyMode: none
-  podSubnet: "10.244.0.0/16"
 nodes:
 - role: control-plane
   extraMounts:
     - hostPath: /var/lib/docker/volumes/kind-containerd-data/_data
       containerPath: /var/lib/containerd
+    - hostPath: ./
+      containerPath: /app
+      readOnly: true
+    - hostPath: $SSH_AUTH_SOCK_DIR
+      containerPath: /ssh-agent-sock
   extraPortMappings:
   - containerPort: 80
     hostPort: 80

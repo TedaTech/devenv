@@ -22,5 +22,7 @@ in
     pkgs.go-task
     pkgs.telepresence2
     pkgs.tektoncd-cli
+    pkgs.fluxcd
+    pkgs.envsubst
   ];
 }
