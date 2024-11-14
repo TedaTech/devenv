@@ -83,7 +83,9 @@ tasks:
     status:
       - kubectl wait --for=condition=Ready helmrelease/crossplane -n crossplane --timeout=0s
     vars:
-      INFRA_CLUSTER: '{{.INFRA_CLUSTER | default "git@github.com/TedaTech/infra.git//clusters/dev/flux-system"}}'
+      INFRA_REPOSITORY: '{{ .INFRA_REPOSITORY | default "ssh://git@ssh.github.com:443/TedaTech/infra" }}'
     cmds:
       - flux install
-      - kubectl apply -k "{{ .INFRA_CLUSTER }}"
+      - kubectl apply -k {{.INFRA_REPOSITORY}}//infrastructure/controllers
+      - kubectl wait --for=condition=Ready helmrelease --all --all-namespaces --timeout=300s
+      - kubectl apply -k {{.INFRA_REPOSITORY}}//infrastructure/configs

@@ -11,8 +11,6 @@ nodes:
     - hostPath: ./
       containerPath: /app
       readOnly: true
-    - hostPath: $SSH_AUTH_SOCK_DIR
-      containerPath: /ssh-agent-sock
   extraPortMappings:
   - containerPort: 80
     hostPort: 80
