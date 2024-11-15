@@ -30,5 +30,6 @@ in
     pkgs.fluxcd
     pkgs.envsubst
     pkgs.skaffold
+    pkgs.parallel
   ];
 }
