@@ -8,9 +8,11 @@ nodes:
   extraMounts:
     - hostPath: /var/lib/docker/volumes/kind-containerd-data/_data
       containerPath: /var/lib/containerd
-    - hostPath: ./
+    - hostPath: $APP_ROOT
       containerPath: /app
       readOnly: true
+    - hostPath: $MKCERT_ROOT_CA_CERT
+      containerPath: /usr/local/share/ca-certificates/mkcert-ca.crt
   extraPortMappings:
   - containerPort: 80
     hostPort: 80

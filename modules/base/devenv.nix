@@ -11,6 +11,7 @@ in
   env.TEDA_TASK_DIR = taskDir;
   env.TEDA_TASK_BASE = "${taskDir}/Taskfile.yaml";
   env.TEDA_KIND_CONFIG = kindConfigFile;
+  env.APP_ROOT = config.env.DEVENV_ROOT;
 
   dotenv.enable = true;
 

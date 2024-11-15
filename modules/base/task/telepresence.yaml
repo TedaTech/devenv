@@ -10,11 +10,7 @@ tasks:
     desc: Connect to the remote cluster, reconnect if connection is broken.
     deps: [ install ]
     cmds:
-      - |
-        if telepresence connect | grep -q "please quit"; then
-          telepresence quit
-          telepresence connect
-        fi
+      - (telepresence connect | grep -q "please quit") && (telepresence quit; telepresence connect)
 
   install:
     desc: Install telepresence in the remote cluster

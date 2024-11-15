@@ -8,6 +8,7 @@ tasks:
   create:
     desc: Create cluster and configure, root-ca secret and install crossplane
     cmds:
+      - task: create-local-cert
       - task: cluster-create
       - task: install-cilium
       - task: install-local-cert
@@ -31,12 +32,18 @@ tasks:
       - defer: rm "{{ .TEDA_KIND_CONFIG_TMP }}"
       - task: cluster-create-image-cache
       - |
-        export SSH_AUTH_SOCK_DIR=$(dirname $SSH_AUTH_SOCK)
+        export MKCERT_ROOT_CA_KEY="$(mkcert -CAROOT)/rootCA-key.pem"
+        export MKCERT_ROOT_CA_CERT="$(mkcert -CAROOT)/rootCA.pem"
+
         envsubst < "$TEDA_KIND_CONFIG" > "{{ .TEDA_KIND_CONFIG_TMP }}"
         kind get clusters | grep {{.CLUSTER_NAME}} || kind create cluster \
           --name {{.CLUSTER_NAME}} \
           --image kindest/node:{{.KUBERNETES_VERSION}} \
           --config="{{ .TEDA_KIND_CONFIG_TMP }}"
+      - |
+        for node in $(kind get nodes --name {{.CLUSTER_NAME}} ); do
+          docker exec $node update-ca-certificates
+        done
 
   cluster-create-image-cache:
     internal: true
@@ -62,13 +69,17 @@ tasks:
           --set k8sServiceHost={{.API_SERVER_IP}} \
           --set k8sServicePort={{.API_SERVER_PORT}}
 
+  create-local-cert:
+    internal: true
+    cmds:
+      - mkcert -install
+
   install-local-cert:
     desc: Uses mkcert to install locally trusted root certificate and exports cert to k8s secret
     internal: true
     status:
       - kubectl get secret --namespace cert-manager root-ca
     cmds:
-      - mkcert -install
       - kubectl create namespace cert-manager || true
       - |
         kubectl create secret tls root-ca --namespace cert-manager \
