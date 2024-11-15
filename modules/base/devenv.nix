@@ -29,5 +29,6 @@ in
     pkgs.tektoncd-cli
     pkgs.fluxcd
     pkgs.envsubst
+    pkgs.skaffold
   ];
 }
