@@ -1,0 +1,26 @@
+version: '3'
+
+includes:
+  infra:
+    taskfile: $TEDA_TASK_DIR/infra.yaml
+    internal: true
+
+tasks:
+  connect:
+    desc: Connect to the remote cluster, reconnect if connection is broken.
+    deps: [ install ]
+    cmds:
+      - |
+        if telepresence connect | grep -q "please quit"; then
+          telepresence quit
+          telepresence connect
+        fi
+
+  install:
+    desc: Install telepresence in the remote cluster
+    deps: [ infra:create ]
+    internal: true
+    status:
+      - helm get notes --namespace ambassador traffic-manager
+    cmds:
+      - if helm get notes --namespace ambassador traffic-manager; then telepresence helm upgrade; else telepresence helm install; fi

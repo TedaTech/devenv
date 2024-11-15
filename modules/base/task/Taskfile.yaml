@@ -1,0 +1,10 @@
+version: '3'
+
+includes:
+  infra:
+    taskfile: ./infra.yaml
+    aliases: [i]
+
+  telepresence:
+    taskfile: ./telepresence.yaml
+    aliases: [tp]

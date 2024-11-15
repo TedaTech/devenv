@@ -1,11 +1,15 @@
 { pkgs, lib, config, inputs, ... }:
 let
   clusterName = builtins.hashString "md5" config.env.DEVENV_ROOT;
-  taskFile = pkgs.writeText "tedaTaskfile" (builtins.readFile ./Taskfile.yaml);
   kindConfigFile = pkgs.writeText "tedaKindConfig" (builtins.readFile ./kind-config.yaml);
+  taskDir= pkgs.symlinkJoin {
+    name = "tedaTaskDir";
+    paths = [ ./task ];
+  };
 in
 {
-  env.TEDA_TASK_INFRA = taskFile;
+  env.TEDA_TASK_DIR = taskDir;
+  env.TEDA_TASK_BASE = "${taskDir}/Taskfile.yaml";
   env.TEDA_KIND_CONFIG = kindConfigFile;
 
   dotenv.enable = true;
