@@ -100,3 +100,4 @@ tasks:
       - kubectl apply -k {{.INFRA_REPOSITORY}}//infrastructure/controllers
       - kubectl wait --for=condition=Ready helmrelease --all --all-namespaces --timeout=300s
       - kubectl apply -k {{.INFRA_REPOSITORY}}//infrastructure/configs
+      - kubectl apply -k {{.INFRA_REPOSITORY}}//apps/dev
