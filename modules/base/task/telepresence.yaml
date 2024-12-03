@@ -10,7 +10,18 @@ tasks:
     desc: Connect to the remote cluster, reconnect if connection is broken.
     deps: [ install ]
     cmds:
-      - if (telepresence connect | grep -q "please quit"); then (telepresence quit; telepresence connect); fi
+      - |
+        CLIENT_VERSION=$(telepresence version --client)
+        DAEMON_VERSION=$(telepresence version --daemon)
+        if [ "$CLIENT_VERSION" != "$DAEMON_VERSION" ]; then
+          telepresence quit -s
+          telepresence connect
+        else
+          if (telepresence connect | grep -q "please quit"); then
+            telepresence quit
+            telepresence connect
+          fi
+        fi
 
   install:
     desc: Install telepresence in the remote cluster
